@@ -1,0 +1,4 @@
+com\example\kafka\avro\ExampleMessage$Builder.class
+org\acme\MyMessagingApplication.class
+org\acme\Producer.class
+com\example\kafka\avro\ExampleMessage.class

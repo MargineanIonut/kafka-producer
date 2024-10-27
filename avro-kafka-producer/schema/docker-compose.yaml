@@ -1,0 +1,41 @@
+version: '2'
+services:
+  schema:
+    image: confluentinc/cp-schema-registry:7.3.0
+    container_name: schema
+    ports:
+      - 8081:8081
+    environment:
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://kafka:9092
+      SCHEMA_REGISTRY_HOST_NAME: schema
+      SCHEMA_REGISTRY_KAFKASTORE_TOPIC_REPLICATION_FACTOR: 1
+      SCHEMA_REGISTRY_KAFKASTORE_REQUEST_TIMEOUT_MS: 120000
+      SCHEMA_REGISTRY_KAFKASTORE_SESSION_TIMEOUT_MS: 120000
+    networks:
+      - kafka-network
+    depends_on:
+      kafka:
+        condition: service_healthy
+
+  akhq:
+    image: tchiotludo/akhq
+    container_name: akhq
+    ports:
+      - 8082:8080
+    environment:
+      AKHQ_CONFIGURATION: |
+        akhq:
+          connections:
+            local:
+              properties:
+                bootstrap.servers: "kafka:9092"
+                schema.registry.url: "http://schema:8081"
+    depends_on:
+      schema:
+        condition: service_healthy
+    networks:
+      - kafka-network
+
+networks:
+  kafka-network:
+    external: true

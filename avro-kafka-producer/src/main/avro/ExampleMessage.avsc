@@ -1,0 +1,10 @@
+{
+  "type": "record",
+  "name": "ExampleMessage",
+  "namespace": "com.example.kafka.avro",
+  "fields": [
+    {"name": "id", "type": "string"},
+    {"name": "name", "type": "string"},
+    {"name": "timestamp", "type": "long"}
+  ]
+}
